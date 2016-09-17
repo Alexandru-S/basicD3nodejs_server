@@ -1,0 +1,61 @@
+
+
+<title>Welcome</title>
+
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/d3-selection.v1.js"></script>
+
+
+<p>here everywhere</p>
+<script>
+
+	d3.json("mydata.json", function(dataArray){
+
+  var maxpoint=0;
+  for (var i = 0; i < dataArray.length; i++) {
+  var tempoint;
+  var tempoint = dataArray[i];
+
+  if ( tempoint >= maxpoint ) { maxpoint = tempoint; }
+
+}
+
+  var width = 500;
+  var height = 500;
+  var widthScale = d3.scaleLinear().domain([0,420]).range([0,width]);
+  var color = d3.scaleLinear().domain([0,420]).range(["orange","blue"]);
+  var xAxis = d3.axisBottom(widthScale);
+	var space = 65;
+
+
+          var canvas = d3.select("p")
+              .append("svg")
+              .attr("width",width)
+              .attr("height", height)
+              .append("g")
+              .attr("transform","translate(10,10)");
+
+         var bars = canvas.selectAll("rect")
+             .data(dataArray)
+             .enter()
+             .append("rect")
+             .attr("width", function(d){return d.id;})
+             .attr("height", 50)
+             .attr("fill", function(d){return color(d);})
+             .attr("y",function(d,i){return i*space});
+              canvas.append("g")
+             .attr("transform","translate(0,475)").call(xAxis);
+
+		 canvas.selectAll("text")
+           .data(dataArray)
+           .enter()
+           .append("text")
+           .attr("fill", "green")
+           .attr("y",function(d,i){return i*space})
+						.text(function (d) {return d.week;});
+            });
+</script>
+
+
+
